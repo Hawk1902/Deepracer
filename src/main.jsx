@@ -2,7 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import "./index.css";
+import Leaderboard from "./components/Leaderboard";
+
+import "./styles/main.scss";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +13,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/leaderboard",
-    element: <div>Leaderboard</div>,
+    element: <Leaderboard />,
   },
 ]);
 
