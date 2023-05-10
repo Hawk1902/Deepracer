@@ -66,28 +66,28 @@
         :nth-child(4) {
           width: 30%;
         }
-        &.first {
+        &:nth-child(1) {
           background: linear-gradient(
             90deg,
             rgba(251, 227, 85, 1) 0%,
             rgba(212, 152, 64, 1) 100%
           );
         }
-        &.second {
+        &:nth-child(2) {
           background: linear-gradient(
             90deg,
             rgba(206, 206, 209, 1) 0%,
             rgba(112, 113, 117, 1) 100%
           );
         }
-        &.third {
+        &:nth-child(3) {
           background: linear-gradient(
             90deg,
             rgba(250, 192, 119, 1) 0%,
             rgba(136, 90, 54, 1) 100%
           );
         }
-        &.participant {
+        &:nth-child(n + 4) {
           background: linear-gradient(
             90deg,
             rgba(83, 108, 123, 1) 0%,
