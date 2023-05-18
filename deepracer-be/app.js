@@ -13,8 +13,10 @@ app.use(
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-const routes = require("./routes/csv");
-app.use(routes);
+const csvRoutes = require("./routes/csv");
+const imageRoutes = require("./routes/image");
+app.use(csvRoutes);
+app.use(imageRoutes);
 
 app.listen(PORT, (error) => {
   if (!error)
