@@ -25,32 +25,28 @@ function ScoreEntry() {
   console.log({allScores});
 
 
-  const handleCSVDownload = () => {
-    const blob = new Blob(allScores, {type: "text/json"})
-    const a = document.createElement('a')
-    a.download = "scores.json"
-    a.href = window.URL.createObjectURL(blob)
-    const clickEvt = new MouseEvent('click', {
-      view: window,
-      bubbles: true,
-      cancelable: true,
-    })
-    a.dispatchEvent(clickEvt)
-    a.remove()
-  }
   return (
     <>
       <div className="score-container">
         <form className="score-form" onSubmit={handleSubmit}>
           <div className="score-form-header">Enter Score</div>
-          <input placeholder="Name" ref={nameRef} />
+          <input placeholder="Model Name" ref={nameRef} />
           <input placeholder="Time in seconds" ref={timeRef} />
+          <div className="score-form-input">
+            <label for="">Evaluation CSV</label>
+            <input type="file" onChange={() => console.log("afsas")} />
+          </div>
+          <div className="score-form-input">
+            <label for="">Training CSV</label>
+            <input type="file" onChange={() => console.log("afsas")} />
+          </div>
+          <div className="score-form-input">
+            <label for="">Evaluation Logs</label>
+            <input type="file" onChange={() => console.log("afsas")} />
+          </div>
           <button type="submit">Submit</button>
         </form>
       </div>
-      {allScores.length !== 0 && <div className="download-container">
-        <div>Download scores</div>
-        <button onClick={handleCSVDownload}>Get CSV</button></div>}
     </>
   );
 }

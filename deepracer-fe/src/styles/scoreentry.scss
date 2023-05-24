@@ -1,5 +1,5 @@
 .score-container {
-  width: 30%;
+  width: 35%;
   margin: auto;
   margin-top: 6rem;
   border: 1px solid gray;
@@ -12,6 +12,10 @@
     .score-form-header {
       text-align: center;
       font-size: 1.5rem;
+    }
+    .score-form-input {
+      display: flex;
+      justify-content: space-between;
     }
   }
 }
