@@ -41,7 +41,7 @@ function ScoreEntry() {
 
     data.append("evallog", evalLog);
     
-    fetch("http://localhost:4000/api/csvtest", {
+    fetch("http://localhost:4000/api/csv", {
       method: "POST",
       body: data,
     })

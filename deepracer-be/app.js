@@ -18,7 +18,9 @@ const imageRoutes = require("./routes/image");
 app.use(csvRoutes);
 app.use(imageRoutes);
 
-app.listen(PORT, (error) => {
+app.use("/generated", express.static("public"));
+
+app.listen(PORT, "0.0.0.0", (error) => {
   if (!error)
     console.log(
       "Server is Successfully Running, and App is listening on port " + PORT

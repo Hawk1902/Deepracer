@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const fs = require("fs");
 
 const multer = require("multer");
 
@@ -9,54 +8,39 @@ const { spawn } = require("child_process");
 // Set up multer storage configuration
 const storage = multer.diskStorage({
   destination: async function (req, file, cb) {
-    // create data/modelname
-    const modelName = file.originalname.split(".")[0];
-    const modelDir = "data/" + modelName;
-    if (!fs.existsSync(modelDir)) {
-      fs.mkdirSync(modelDir);
-    }
-    // creat data/modelname/csv
-    const modelCSVDir = "data/" + modelName + "/csv/";
-    if (!fs.existsSync(modelCSVDir)) {
-      fs.mkdirSync(modelCSVDir);
-    }
-    cb(null, modelCSVDir); // Specify the directory where you want to save the uploaded files
+    cb(null, "public/");
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use the original filename
+    let ext = "";
+    if (file.originalname.split(".").length > 1)
+      // check if there is an extension or not.
+      ext = file.originalname.substring(
+        file.originalname.lastIndexOf("."),
+        file.originalname.length
+      );
+    const modelname = req.body.modelname;
+    cb(null, file.fieldname + "-" + modelname + ext); // Use the original filename
   },
 });
 
 const upload = multer({ storage: storage });
-var type = upload.single("csvFile");
+const type2 = upload.fields([
+  { name: "evalcsv", maxCount: 1 },
+  { name: "trainingcsv", maxCount: 1 },
+  { name: "evallog", maxCount: 1 },
+]);
 
-router.post("/api/csv", type, (req, res) => {
-  // no file
-  if (!req.file) {
-    return res.status(400).send("No file uploaded.");
-  }
-  const modelName = req.body.name;
-
-  // Save the file using fs module
-  fs.readFile(req.file.path, "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error saving file.");
-    }
-
-    // Process the file data as needed
-    // console.log(data);
-    // Respond with a success message
-    res.send("File uploaded and saved.");
-  });
-
-  const fileName = "data/" + modelName + "/csv/" + req.file.originalname;
-  console.log({ fileName });
+router.post("/api/csv", type2, (req, res) => {
+  const modelname = req.body.modelname;
+  const eval_csv_path = "public/evalcsv-" + modelname + ".csv";
+  const training_csv_path = "public/trainingcsv-" + modelname + ".csv";
+  const eval_log_csv_path = "public/evallog-" + modelname + ".log";
 
   const pythonScript = spawn("python", [
-    "scripts/testracer.py",
-    fileName,
-    modelName,
+    "scripts/generator.py",
+    eval_csv_path,
+    training_csv_path,
+    eval_log_csv_path,
   ]);
 
   // output from the python script
@@ -69,16 +53,7 @@ router.post("/api/csv", type, (req, res) => {
     console.error(`Python script error: ${data}`);
   });
 
-  // Handle script completion
-  // pythonScript.on("close", (code) => {
-  //   if (code === 0) {
-  //     // Script executed successfully
-  //     res.send("Python script executed.");
-  //   } else {
-  //     // Script execution failed
-  //     res.status(500).send("Error executing Python script.");
-  //   }
-  // });
+  res.json("File uploaded and saved.");
 });
 
 module.exports = router;
