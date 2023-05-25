@@ -12,7 +12,7 @@ function Leaderboard() {
   return (
     <div className="leaderboard-container">
       <div className="leaderboard-title">
-        <img src={deepracer} alt="deepracer logo" />
+        <img src={deepracer} alt="deepracer logo" className="deepracerLogo" />
         <img src={rmit} alt="rmit logo" className="leaderboard-rmit-logo" />
         <img src={car} alt="deepracer car" />
       </div>
