@@ -5,6 +5,7 @@ import { addScore } from "../redux/scoreSlice";
 import { useSelector } from "react-redux";
 
 import "../styles/scoreentry.scss";
+import MapDrop from "./MapDrop";
 
 function ScoreEntry() {
   const nameRef = useRef();
@@ -13,6 +14,7 @@ function ScoreEntry() {
   const [evalCSV, setEvalCSV] = useState();
   const [trainingCSV, setTrainingCSV] = useState();
   const [evalLog, setEvalLog] = useState();
+  const [selectedMap, setSelectedMap] = useState('');  // new line
 
   const handleEvalCSVChange = (e) => {
     setEvalCSV(e.target.files[0]);
@@ -24,6 +26,10 @@ function ScoreEntry() {
     setEvalLog(e.target.files[0]);
   }
 
+  const handleMapChange = (e) => {  // new handler for map changes
+    setSelectedMap(e.target.value);
+  };
+
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,22 +38,19 @@ function ScoreEntry() {
     );
     
     const data = new FormData();
-    // if (nameRef.current.value) 
     data.append("modelname", nameRef.current.value);
-    // if (evalCSV)
     data.append("evalcsv", evalCSV);
-    // if (trainingCSV)
     data.append("trainingcsv", trainingCSV);
-
     data.append("evallog", evalLog);
+    data.append("selectedMap", selectedMap); // add selected map to the data to be sent
     
     fetch("http://localhost:4000/api/csv", {
       method: "POST",
       body: data,
     })
     .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
+    .then((data) => console.log(data))
+    .catch((err) => console.error(err));
     
     nameRef.current.value = "";
     timeRef.current.value = "";
@@ -75,6 +78,7 @@ function ScoreEntry() {
             <label>Evaluation Log</label>
             <input type="file" onChange={handleEvalLogChange} />
           </div>
+          <MapDrop selectedMap={selectedMap} handleMapChange={handleMapChange} /> {/* updated line */}
           <button type="submit">Submit</button>
         </form>
       </div>
