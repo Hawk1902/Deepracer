@@ -15,8 +15,11 @@ app.use(bodyParser.json());
 
 const csvRoutes = require("./routes/csv");
 const imageRoutes = require("./routes/image");
+const mapRoutes = require("./routes/maps")
 app.use(csvRoutes);
 app.use(imageRoutes);
+app.use(mapRoutes);
+
 
 app.use("/generated", express.static("public"));
 
