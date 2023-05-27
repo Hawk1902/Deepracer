@@ -20,6 +20,17 @@ app.use(imageRoutes);
 
 app.use("/generated", express.static("public"));
 
+const models = require("./models");
+
+models.sequelize
+  .sync()
+  .then(function () {
+    console.log("connected to DB");
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
+
 app.listen(PORT, "0.0.0.0", (error) => {
   if (!error)
     console.log(

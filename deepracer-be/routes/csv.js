@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const Score = require("../models").Score;
 const multer = require("multer");
 
 const { spawn } = require("child_process");
@@ -30,8 +31,18 @@ const type2 = upload.fields([
   { name: "evallog", maxCount: 1 },
 ]);
 
-router.post("/api/csv", type2, (req, res) => {
+router.post("/api/csv", type2, async (req, res) => {
   const modelname = req.body.modelname;
+  const laptime = req.body.laptime;
+
+  if (!modelname.trim().length || !laptime.trim().length)
+    return res.status(400).json("Missing modelname or laptime");
+
+  await Score.create({
+    modelname: modelname,
+    time: laptime,
+  });
+
   const eval_csv_path = "public/evalcsv-" + modelname + ".csv";
   const training_csv_path = "public/trainingcsv-" + modelname + ".csv";
   const eval_log_csv_path = "public/evallog-" + modelname + ".log";
