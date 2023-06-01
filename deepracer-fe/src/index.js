@@ -1,13 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+
+import { store } from "./redux/store";
 import Leaderboard from "./components/Leaderboard";
 import ScoreEntry from "./components/ScoreEntry";
 import CrashImage from "./components/CrashImage";
+import RewardImage from "./components/RewardImage";
+import TrackImage from "./components/TrackImage";
+import TrajectoryImage from "./components/TrajectoryImage";
 
 import "./styles/main.scss";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
 
 const router = createBrowserRouter([
   {
@@ -25,14 +29,23 @@ const router = createBrowserRouter([
   {
     path: "/crash",
     element: <CrashImage />
-  }
+  },
+  {
+    path: "/reward",
+    element: <RewardImage />
+  },
+  {
+    path: "/track",
+    element: <TrackImage />
+  },
+  {
+    path: "/trajectory",
+    element: <TrajectoryImage />
+  },
 ]);
-// reward, track, trajectory
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <RouterProvider router={router} />
   </Provider>
 );
-
-// <React.StrictMode>
