@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Leaderboard from "./components/Leaderboard";
 import ScoreEntry from "./components/ScoreEntry";
+import CrashImage from "./components/CrashImage";
 
 import "./styles/main.scss";
 import { Provider } from "react-redux";
@@ -21,7 +22,12 @@ const router = createBrowserRouter([
     path: "/score",
     element: <ScoreEntry />,
   },
+  {
+    path: "/crash",
+    element: <CrashImage />
+  }
 ]);
+// reward, track, trajectory
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
