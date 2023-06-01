@@ -1,8 +1,4 @@
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { addScore } from "../redux/scoreSlice";
-
-import { useSelector } from "react-redux";
 
 import "../styles/scoreentry.scss";
 
@@ -24,16 +20,14 @@ function ScoreEntry() {
     setEvalLog(e.target.files[0]);
   }
 
-  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      addScore({ name: nameRef.current.value, time: timeRef.current.value })
-    );
     
     const data = new FormData();
     // if (nameRef.current.value) 
     data.append("modelname", nameRef.current.value);
+
+    data.append("laptime", timeRef.current.value);
     // if (evalCSV)
     data.append("evalcsv", evalCSV);
     // if (trainingCSV)
@@ -52,9 +46,6 @@ function ScoreEntry() {
     nameRef.current.value = "";
     timeRef.current.value = "";
   };
-
-  const allScores = useSelector((state) => state.score.scores);
-  console.log({allScores});
 
   return (
     <>

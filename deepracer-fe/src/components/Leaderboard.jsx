@@ -1,13 +1,33 @@
+import { useEffect } from "react";
 import TimeFormat from "hh-mm-ss";
+import { useDispatch } from "react-redux";
 
 import deepracer from "../assets/deepracer.png";
 import rmit from "../assets/rmit.png";
 import car from "../assets/car.png";
 import "../styles/leaderboard.scss";
 import { useSelector } from "react-redux";
+import { setScores, updateModelName } from "../redux/appActions";
 
 function Leaderboard() {
-  const allScores = useSelector((state) => state.score.scores);
+  const dispatch = useDispatch();  
+  const allScores = useSelector((state) => state.app.scores);
+
+  const handleImageRender = (name) => {
+    dispatch(updateModelName(name));
+  }
+
+  useEffect(() => {
+    const pollScores = setInterval(()=> {
+      fetch("http://localhost:4000/api/score", {
+      method: "GET",
+    })
+    .then((res) => res.json())
+      .then((data) => dispatch(setScores(data))) // setScores(data)
+      .catch((err) => console.error(err));
+    }, 10000);
+    return () => clearInterval(pollScores);
+  }, [dispatch])
 
   return (
     <div className="leaderboard-container">
@@ -24,11 +44,11 @@ function Leaderboard() {
           <div>Gap to 1st</div>
         </div>
         <div className="leaderboard-ranking">
-          {allScores.map(({ name, time }, i) => {
+          {allScores.map(({ id, modelname, time }, i) => {
             return (
-              <div className="leaderboard-row" key={i}>
+              <div className="leaderboard-row" key={id} onClick={() => handleImageRender(modelname)}>
                 <div>{`#${i + 1}`}</div>
-                <div>{name}</div>
+                <div>{modelname}</div>
                 <div>{TimeFormat.fromMs(Number(time * 1000), "mm:ss.sss")}</div>
                 <div>-</div>
               </div>
