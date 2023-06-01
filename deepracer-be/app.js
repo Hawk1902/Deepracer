@@ -14,9 +14,9 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 const csvRoutes = require("./routes/csv");
-const imageRoutes = require("./routes/image");
+const scoreRoutes = require("./routes/score");
 app.use(csvRoutes);
-app.use(imageRoutes);
+app.use(scoreRoutes);
 
 app.use("/generated", express.static("public"));
 
