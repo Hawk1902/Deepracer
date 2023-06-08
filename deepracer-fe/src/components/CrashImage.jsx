@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import config from "../config/env";
 
 function CrashImage() {
   const modelName = useSelector((state) => state.app.modelName);  
   const [url, setUrl] = useState("");
 
+  
   useEffect(() => {
-    setUrl(modelName.length > 0 ? "http://localhost:4000/generated/crash-" + modelName + ".png" : "");
+    setUrl(modelName.length > 0 ? `${config.external_ip_addr}/generated/crash-` + modelName + ".png" : "");
   }, [modelName])
 
   return (

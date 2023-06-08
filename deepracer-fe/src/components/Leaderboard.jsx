@@ -8,6 +8,7 @@ import car from "../assets/car.png";
 import "../styles/leaderboard.scss";
 import { useSelector } from "react-redux";
 import { setScores, updateModelName } from "../redux/appActions";
+import config from "../config/env";
 
 function Leaderboard() {
   const dispatch = useDispatch();  
@@ -17,9 +18,9 @@ function Leaderboard() {
     dispatch(updateModelName(name));
   }
 
-  useEffect(() => {
+  useEffect(() => {    
     const pollScores = setInterval(()=> {
-      fetch("http://localhost:4000/api/score", {
+      fetch(`${config.external_ip_addr}/api/score`, {
       method: "GET",
     })
     .then((res) => res.json())
@@ -32,7 +33,7 @@ function Leaderboard() {
   return (
     <div className="leaderboard-container">
       <div className="leaderboard-title">
-        <img src={deepracer} alt="deepracer logo" />
+        <img src={deepracer} alt="deepracer logo" className="deepracerLogo" />
         <img src={rmit} alt="rmit logo" className="leaderboard-rmit-logo" />
         <img src={car} alt="deepracer car" />
       </div>
