@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { toast } from 'react-toastify';
 
 import "../styles/scoreentry.scss";
 
@@ -47,6 +48,16 @@ function ScoreEntry() {
     timeRef.current.value = "";
   };
 
+  const handleResetLeaderboard = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:4000/api/score", {
+      method: "DELETE",
+    })
+    .then((res) => res.json())
+      .then((data) => toast.success("Leaderboard reset successful"))
+      .catch((err) => toast.error(err.message));
+  }
+
   return (
     <>
       <div className="score-container">
@@ -68,6 +79,9 @@ function ScoreEntry() {
           </div>
           <button type="submit">Submit</button>
         </form>
+      </div>
+      <div className="score-container reset-container">
+        <button className="reset-button" onClick={handleResetLeaderboard}>Reset Leaderboard</button>
       </div>
     </>
   );
