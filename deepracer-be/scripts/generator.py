@@ -105,3 +105,167 @@ plt.savefig('public/' + trajectory_img_name, dpi=200)
 
 #---------------------------------------------------------------------------------------------
 
+# another-img-modelname.png
+
+# from deepracer.tracks import TrackIO, Track
+
+# from deepracer.logs import     AnalysisUtils as au,     SimulationLogsIO as slio,     EvaluationUtils as eu,     PlottingUtils as pu
+
+# import warnings
+# warnings.filterwarnings('ignore')
+
+# from datetime import datetime
+
+# """Plot graphs for evaluations
+#         """
+# from math import ceil
+
+# # evaluations = evaluation_logs
+# evaluations = pd.read_csv(evaluation_logs)
+# # evaluations = pd.DataFrame(evaluation_logs)
+# groupby_field = "episode"
+# graphed_value = "speed"
+
+# if groupby_field not in evaluations:
+#     if 'unique_episode' in evaluations:
+#         groupby_field = 'unique_episode'
+#         print("Grouping by 'unique_episode'")
+
+# streams = evaluations.sort_values(
+#     'tstamp', ascending=False).groupby('stream', sort=False)
+
+# for _, stream in streams:
+#     episodes = stream.groupby(groupby_field)
+#     ep_count = len(episodes)
+
+#     rows = ceil(ep_count / 3)
+#     columns = min(ep_count, 3)
+    
+#     plt.figure(figsize=(10,5))
+#     fig, axes = plt.subplots(rows, columns, figsize=(7*columns, 5*rows))
+#     fig.tight_layout(pad=0.4, w_pad=0.5, h_pad=7.0)
+
+#     for id, episode in episodes:
+#         if rows == 1:
+#             ax = axes[id % 3]
+#         elif columns == 1:
+#             ax = axes[int(id/3)]
+#         else:
+#             ax = axes[int(id / 3), id % 3]
+
+#         pu.PlottingUtilsCustom.plot_grid_world(
+#             episode, waypoints, graphed_value, ax=ax)
+        
+#     plt.subplots_adjust(top=0.85)
+#     another_img_name = "xxxxx"
+#     plt.savefig('public/' + another_img_name, dpi=200)
+#     plt.show()
+#     plt.clf()
+    
+# -----fix up
+
+# class PlottingUtilsCustom(pu):
+#     @staticmethod
+#     def plot_evaluations_save(evaluations, track: Track, path, graphed_value='speed', groupby_field='episode'):
+#         """Plot graphs for evaluations
+#         """
+#         from math import ceil
+
+#         if groupby_field not in evaluations:
+#             if 'unique_episode' in evaluations:
+#                 groupby_field = 'unique_episode'
+#                 print("Grouping by 'unique_episode'")
+
+#         streams = evaluations.sort_values(
+#             'tstamp', ascending=False).groupby('stream', sort=False)
+
+#         for _, stream in streams:
+#             episodes = stream.groupby(groupby_field)
+#             ep_count = len(episodes)
+
+#             rows = ceil(ep_count / 3)
+#             columns = min(ep_count, 3)
+            
+#             plt.figure(figsize=(10,5))
+#             fig, axes = plt.subplots(rows, columns, figsize=(7*columns, 5*rows))
+#             fig.tight_layout(pad=0.4, w_pad=0.5, h_pad=7.0)
+
+#             for id, episode in episodes:
+#                 if rows == 1:
+#                     ax = axes[id % 3]
+#                 elif columns == 1:
+#                     ax = axes[int(id/3)]
+#                 else:
+#                     ax = axes[int(id / 3), id % 3]
+
+#                 PlottingUtilsCustom.plot_grid_world(
+#                     episode, track, graphed_value, ax=ax)
+                
+#             plt.subplots_adjust(top=0.85)
+#             plt.savefig(path)
+#             plt.show()
+#             plt.clf()
+            
+#     @staticmethod
+#     def plot_grid_world_save(
+#             episode_df,
+#             track: Track,
+#             path,
+#             graphed_value='speed',
+#             min_progress=None,
+#             cmap=None):
+#         episode_df.loc[:, 'distance_diff'] = ((episode_df['x'].shift(1) - episode_df['x']) ** 2 + (
+#             episode_df['y'].shift(1) - episode_df['y']) ** 2) ** 0.5
+
+#         distance = np.nansum(episode_df['distance_diff'])
+#         lap_time = np.ptp(episode_df['tstamp'].astype(float))
+#         velocity = distance / lap_time
+#         average_speed = np.nanmean(episode_df['speed'])
+#         progress = np.nanmax(episode_df['progress'])
+
+#         if not min_progress or progress > min_progress:
+
+#             distance_lap_time = 'Distance, progress, lap time = %.2f m, %.2f %%, %.2f s' % (
+#                 distance, progress, lap_time
+#             )
+#             speed_velocity = 'Average speed, velocity = %.2f (Gazebo), %.2f m/s' % (
+#                 average_speed, velocity
+#             )
+
+#             fig = plt.figure(figsize=(16, 10))
+#             ax = fig.add_subplot(1, 1, 1)
+
+#             line = LineString(track.inner_border)
+#             PlottingUtils._plot_coords(ax, line)
+#             PlottingUtils._plot_line(ax, line)
+
+#             line = LineString(track.outer_border)
+#             PlottingUtils._plot_coords(ax, line)
+#             PlottingUtils._plot_line(ax, line)
+
+#             if cmap is None:
+#                 cmap = plt.get_cmap('plasma')
+
+#             episode_df.plot.scatter('x', 'y', ax=ax, s=3, c=graphed_value,
+#                                     cmap=cmap)
+
+#             subtitle = '%s\n%s\n%s' % (
+#                 ('Stream: %s, ' % episode_df['stream'].iloc[0]
+#                  ) if 'stream' in episode_df.columns else '',
+# #                 datetime.fromtimestamp(episode_df['tstamp'].iloc[0]),
+#                 distance_lap_time,
+#                 speed_velocity)
+#             ax.set_title(subtitle)
+#             plt.subplots_adjust(top=0.85)
+#             plt.savefig(path)
+#             plt.show()
+#             plt.clf()
+
+# # 20230419092331
+# logs = [evaluation_logs, "20230419092331"]
+
+# # log_files = glob.glob(os.path.join(evaluation_logs, "*.log"))
+# # logs = [[os.path.basename(log_file), 'Graph'] for log_file in log_files]
+
+# #Loads all the logs from the above time range
+# bulk = slio.load_a_list_of_logs(logs)
