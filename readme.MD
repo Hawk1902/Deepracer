@@ -1,15 +1,3 @@
-npm run dev -- --host
-
-jupyter notebook --ip 0.0.0.0 --NotebookApp.token='' --NotebookApp.password=''
-
-pip install nbconvert==5.6.1
-
-conda install -c conda-forge nbconvert=5.6.1
-
-jupyter --paths
-
-mv /Users/marcus/anaconda3/share/jupyter/lab /Users/marcus/anaconda3/share/jupyter/dml
-
 Deepracer
 Description
 
@@ -36,7 +24,15 @@ Usage
 
 To use the Deepracer application:
 
-Navigate to the hosted URL or run it on your local server.
-You will find the leaderboard on the main screen. It displays the racers' names and their Deepracer models' completion times.
-To contribute your own data, fill in the form with the necessary files (Training CSV, Evaluation CSV, Evaluation Log, Model Name, Fastest Completion Time) and click 'Submit'.
-To view your performance graphs, simply click on your name in the leaderboard.
+For frontend:
+
+``HOST=0.0.0.0 npm run start``
+
+``/`` will get you to the leaderboard page. It displays the racers' names and their Deepracer models' completion times. To view your performance graphs on respective pages (below), simply click on your name in the leaderboard.
+
+``/score`` will get you to the score entry page. It will ask for input parameters (Training CSV, Evaluation CSV, Evaluation Log, Model Name, Fastest Completion Time). Upon submission, changes will be reflected on the leaderboard page.
+
+For backend:
+
+``npm run start``
+
